@@ -1,0 +1,48 @@
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import path from 'path';
+import { authRouter } from './routes/auth';
+import { athleteProfileRouter } from './routes/athleteProfile';
+import { brandProfileRouter } from './routes/brandProfile';
+
+// Load environment variables
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
+const app = express();
+const port = process.env.PORT || 4000;
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
+
+// Static file serving for uploads
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
+// Routes
+app.use('/auth', authRouter);
+app.use('/athlete-profile', athleteProfileRouter);
+app.use('/brand-profile', brandProfileRouter);
+
+app.get('/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/', (_req, res) => {
+  res.json({
+    message: 'Hello World from Athlete Advertising Marketplace API (Lean v1)'
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Backend API running on http://localhost:${port}`);
+});
