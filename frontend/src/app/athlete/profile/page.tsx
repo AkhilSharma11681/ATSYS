@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface BodyPart {
   part: string;
@@ -198,7 +199,12 @@ export default function AthleteProfilePage() {
 
   return (
     <div style={{ maxWidth: '640px', margin: '3rem auto', padding: '2rem', border: '1px solid #eaeaea', borderRadius: '8px' }}>
-      <h1 style={{ fontSize: '1.75rem', marginBottom: '1.5rem' }}>Athlete Profile Setup</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h1 style={{ fontSize: '1.75rem', margin: 0 }}>Athlete Profile Setup</h1>
+        <Link href="/athletes" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem' }}>
+          ← Back to Directory
+        </Link>
+      </div>
 
       {error && (
         <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '4px', marginBottom: '1rem' }}>

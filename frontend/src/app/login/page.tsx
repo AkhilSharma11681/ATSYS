@@ -47,8 +47,8 @@ export default function LoginPage() {
         // If consent is already given, proceed to profile (or home for now)
         router.push('/athlete/profile');
       } else if (data.user?.role === 'brand') {
-        // Brand lands on dashboard placeholder
-        router.push('/brand/dashboard');
+        // Brand lands on athlete directory
+        router.push('/athletes');
       } else {
         // Fallback
         router.push('/');

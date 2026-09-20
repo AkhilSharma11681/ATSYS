@@ -6,6 +6,9 @@ import path from 'path';
 import { authRouter } from './routes/auth';
 import { athleteProfileRouter } from './routes/athleteProfile';
 import { brandProfileRouter } from './routes/brandProfile';
+import { athletesRouter } from './routes/athletes';
+import { contactRequestsRouter } from './routes/contactRequests';
+import { adminRouter } from './routes/admin';
 
 // Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -27,8 +30,11 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Routes
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
+app.use('/athletes', athletesRouter);
 app.use('/athlete-profile', athleteProfileRouter);
 app.use('/brand-profile', brandProfileRouter);
+app.use('/contact-requests', contactRequestsRouter);
 
 app.get('/health', (_req, res) => {
   res.json({

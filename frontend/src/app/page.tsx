@@ -14,6 +14,19 @@ export default function Home() {
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
         <Link
+          href="/athletes"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#2563eb',
+            color: '#fff',
+            textDecoration: 'none',
+            borderRadius: '6px',
+            fontWeight: 500,
+          }}
+        >
+          Browse Athletes
+        </Link>
+        <Link
           href="/login"
           style={{
             padding: '0.75rem 1.5rem',
@@ -40,7 +53,7 @@ export default function Home() {
           Athlete Profile
         </Link>
         <Link
-          href="/brand/dashboard"
+          href="/brand/profile"
           style={{
             padding: '0.75rem 1.5rem',
             backgroundColor: '#eaeaea',
@@ -50,7 +63,20 @@ export default function Home() {
             fontWeight: 500,
           }}
         >
-          Brand Dashboard
+          Brand Profile
+        </Link>
+        <Link
+          href="/admin"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#374151',
+            color: '#fff',
+            textDecoration: 'none',
+            borderRadius: '6px',
+            fontWeight: 500,
+          }}
+        >
+          Admin Portal
         </Link>
       </div>
     </main>

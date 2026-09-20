@@ -30,3 +30,7 @@ pnpm-debug.log*
 .idea/
 *.swp
 *.swo
+cookies.txt
+temp.txt
+athlete_cookies.txt
+newbrand_cookies.txt

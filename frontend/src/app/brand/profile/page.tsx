@@ -113,8 +113,8 @@ export default function BrandProfilePage() {
     <div style={{ maxWidth: '640px', margin: '3rem auto', padding: '2rem', border: '1px solid #eaeaea', borderRadius: '8px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1 style={{ fontSize: '1.75rem', margin: 0 }}>Brand Profile Setup</h1>
-        <Link href="/brand/dashboard" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem' }}>
-          ← Back to Dashboard
+        <Link href="/athletes" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem' }}>
+          ← Back to Directory
         </Link>
       </div>
 
