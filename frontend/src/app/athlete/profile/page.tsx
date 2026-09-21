@@ -181,7 +181,7 @@ export default function AthleteProfilePage() {
         throw new Error(data.error || 'Failed to update profile.');
       }
 
-      setSuccess('Profile saved successfully! Your athlete details and consent have been recorded.');
+      setSuccess('Profile saved successfully! Your athlete details and placement rates are live.');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -191,203 +191,309 @@ export default function AthleteProfilePage() {
 
   if (loading) {
     return (
-      <div style={{ maxWidth: '600px', margin: '4rem auto', textAlign: 'center' }}>
-        <p>Loading profile...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Loading athlete profile...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '640px', margin: '3rem auto', padding: '2rem', border: '1px solid #eaeaea', borderRadius: '8px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.75rem', margin: 0 }}>Athlete Profile Setup</h1>
-        <Link href="/athletes" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem' }}>
-          ← Back to Directory
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-page)' }}>
+      {/* Top Header */}
+      <header style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1.25rem 2rem',
+        backgroundColor: 'var(--bg-card)',
+        borderBottom: '1px solid var(--border-subtle)',
+      }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+          <div style={{
+            width: '32px', height: '32px',
+            background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            borderRadius: '8px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontWeight: '800', fontSize: '1.2rem'
+          }}>
+            A
+          </div>
+          <span style={{ fontFamily: 'var(--font-jakarta)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            ATSYS
+          </span>
         </Link>
-      </div>
+        <Link href="/athletes" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+          Browse Directory →
+        </Link>
+      </header>
 
-      {error && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '4px', marginBottom: '1rem' }}>
-          {error}
-        </div>
-      )}
+      <main style={{ maxWidth: '760px', margin: '2.5rem auto', padding: '0 1.5rem', width: '100%', flex: 1 }}>
+        <div className="animate-fade-in" style={{
+          backgroundColor: 'var(--bg-card)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '2.5rem',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--shadow-md)'
+        }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              Athlete Profile Setup
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+              Configure your competition details and available ad inventory to start receiving brand sponsorship inquiries.
+            </p>
+          </div>
 
-      {success && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '4px', marginBottom: '1rem' }}>
-          {success}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {/* Name */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Full Name *</label>
-          <input
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Alex Hunter"
-          />
-        </div>
-
-        {/* City */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>City *</label>
-          <input
-            type="text"
-            required
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. London, UK"
-          />
-        </div>
-
-        {/* Sport Type */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Sport / Discipline *</label>
-          <input
-            type="text"
-            required
-            value={sportType}
-            onChange={(e) => setSportType(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Hyrox, Marathon, CrossFit, Triathlon"
-          />
-        </div>
-
-        {/* Upcoming Event */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Upcoming Event Name *</label>
-          <input
-            type="text"
-            required
-            value={upcomingEvent}
-            onChange={(e) => setUpcomingEvent(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Hyrox London 2026"
-          />
-        </div>
-
-        {/* Event Date */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Event Date *</label>
-          <input
-            type="date"
-            required
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-          />
-        </div>
-
-        {/* Instagram Handle */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Instagram Handle (Optional)</label>
-          <input
-            type="text"
-            value={instagramHandle}
-            onChange={(e) => setInstagramHandle(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. @alex_athlete"
-          />
-        </div>
-
-        {/* Photo Upload */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Profile Photo</label>
-          <input
-            type="file"
-            accept="image/png, image/jpeg, image/jpg"
-            onChange={handlePhotoUpload}
-            style={{ marginBottom: '0.5rem' }}
-          />
-          {photoUrl && (
-            <div style={{ marginTop: '0.5rem' }}>
-              <p style={{ fontSize: '0.875rem', color: '#666' }}>Current Photo:</p>
-              <img
-                src={photoUrl.startsWith('http') ? photoUrl : `${API_URL}${photoUrl}`}
-                alt="Profile Preview"
-                style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ccc', marginTop: '0.25rem' }}
-              />
+          {error && (
+            <div style={{ padding: '0.875rem 1rem', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', border: '1px solid var(--danger-border)', fontSize: '0.9rem' }}>
+              ⚠️ {error}
             </div>
           )}
-        </div>
 
-        {/* Available Body Parts */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.5rem' }}>Available Body Parts & Pricing (USD) *</label>
-          {bodyParts.map((item, index) => (
-            <div key={index} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-              <input
-                type="text"
-                placeholder="e.g. Left Arm, Back, Chest"
-                value={item.part}
-                onChange={(e) => handleBodyPartChange(index, 'part', e.target.value)}
-                style={{ flex: 2, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Price ($)"
-                value={item.price}
-                onChange={(e) => handleBodyPartChange(index, 'price', e.target.value)}
-                style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => removeBodyPartRow(index)}
-                style={{ padding: '0.5rem 0.75rem', backgroundColor: '#ef4444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-              >
-                ✕
-              </button>
+          {success && (
+            <div style={{ padding: '0.875rem 1rem', backgroundColor: 'var(--success-light)', color: 'var(--success-hover)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', border: '1px solid var(--success-border)', fontSize: '0.9rem', fontWeight: 600 }}>
+              ✓ {success}
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={addBodyPartRow}
-            style={{ padding: '0.5rem 1rem', backgroundColor: '#e5e7eb', color: '#374151', border: 'none', borderRadius: '4px', cursor: 'pointer', marginTop: '0.25rem' }}
-          >
-            + Add Body Part
-          </button>
-        </div>
+          )}
 
-        {/* Consent Checkbox */}
-        <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-          <input
-            type="checkbox"
-            id="consent"
-            checked={consentGiven}
-            onChange={(e) => setConsentGiven(e.target.checked)}
-            required
-            style={{ marginTop: '0.25rem' }}
-          />
-          <label htmlFor="consent" style={{ fontSize: '0.875rem', lineHeight: '1.4' }}>
-            <strong>Required:</strong> I agree my profile and photo will be public, and I understand the platform's safety terms.
-          </label>
-        </div>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* 1. Basic Info */}
+            <div>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                1. Basic Information
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                    placeholder="e.g. Alex Hunter"
+                  />
+                </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            padding: '0.75rem',
-            backgroundColor: '#2563eb',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginTop: '1rem',
-          }}
-        >
-          {submitting ? 'Saving Profile...' : 'Save Athlete Profile'}
-        </button>
-      </form>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    City / Location *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                    placeholder="e.g. London, UK"
+                  />
+                </div>
+
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Sport / Discipline *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={sportType}
+                    onChange={(e) => setSportType(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                    placeholder="e.g. Hyrox, Marathon, CrossFit, Triathlon"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Target Event */}
+            <div>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                2. Target Event
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Upcoming Event Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={upcomingEvent}
+                    onChange={(e) => setUpcomingEvent(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                    placeholder="e.g. Hyrox London 2026"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Event Date *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Media & Social */}
+            <div>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                3. Media & Social
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Instagram Handle (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={instagramHandle}
+                    onChange={(e) => setInstagramHandle(e.target.value)}
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                    placeholder="e.g. @alex_athlete"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                    Profile Photo (Cloudinary)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handlePhotoUpload}
+                    style={{ fontSize: '0.9rem' }}
+                  />
+                  {photoUrl && (
+                    <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <img
+                        src={photoUrl.startsWith('http') ? photoUrl : `${API_URL}${photoUrl}`}
+                        alt="Profile Preview"
+                        style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: 'var(--radius-md)', border: '2px solid var(--border-subtle)' }}
+                      />
+                      <span style={{ fontSize: '0.85rem', color: 'var(--success-hover)', fontWeight: 600 }}>
+                        ✓ Photo uploaded and ready
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Placement Spaces & Pricing */}
+            <div>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.5rem' }}>
+                4. Available Placement Spaces & Rates (USD) *
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {bodyParts.map((item, index) => (
+                  <div key={index} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <input
+                      type="text"
+                      placeholder="e.g. Left Arm, Back, Chest, Shoulders"
+                      value={item.part}
+                      onChange={(e) => handleBodyPartChange(index, 'part', e.target.value)}
+                      style={{ flex: 2, padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                      required
+                    />
+                    <input
+                      type="number"
+                      placeholder="Price ($)"
+                      value={item.price}
+                      onChange={(e) => handleBodyPartChange(index, 'price', e.target.value)}
+                      style={{ flex: 1, padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeBodyPartRow(index)}
+                      style={{
+                        padding: '0.75rem 1rem',
+                        backgroundColor: 'var(--danger-light)',
+                        color: 'var(--danger)',
+                        border: '1px solid var(--danger-border)',
+                        borderRadius: 'var(--radius-sm)',
+                        cursor: 'pointer',
+                        fontWeight: 600
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={addBodyPartRow}
+                  style={{
+                    padding: '0.625rem 1rem',
+                    backgroundColor: 'var(--bg-subtle)',
+                    color: 'var(--text-secondary)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-sm)',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    alignSelf: 'flex-start',
+                    marginTop: '0.25rem'
+                  }}
+                >
+                  + Add Placement Space
+                </button>
+              </div>
+            </div>
+
+            {/* 5. Consent & Safety */}
+            <div style={{
+              backgroundColor: 'var(--primary-light)',
+              padding: '1.25rem',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--primary-border)',
+              display: 'flex',
+              gap: '0.75rem',
+              alignItems: 'flex-start'
+            }}>
+              <input
+                type="checkbox"
+                id="consent"
+                checked={consentGiven}
+                onChange={(e) => setConsentGiven(e.target.checked)}
+                required
+                style={{ marginTop: '0.25rem', width: '16px', height: '16px', cursor: 'pointer' }}
+              />
+              <label htmlFor="consent" style={{ fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-primary)', cursor: 'pointer' }}>
+                <strong>Public Directory & Safety Terms:</strong> I consent to making my profile, competition details, and photo publicly visible to brand advertisers on the marketplace.
+              </label>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{
+                padding: '0.875rem 1.5rem',
+                backgroundColor: submitting ? 'var(--primary-hover)' : 'var(--primary)',
+                color: '#ffffff',
+                fontWeight: 700,
+                border: 'none',
+                borderRadius: 'var(--radius-sm)',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                fontSize: '1rem',
+                boxShadow: 'var(--shadow-sm)'
+              }}
+            >
+              {submitting ? 'Saving Profile...' : 'Save Athlete Profile'}
+            </button>
+          </form>
+        </div>
+      </main>
     </div>
   );
 }

@@ -2,23 +2,12 @@ import { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { query } from '../db';
 import multer from 'multer';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from '../config/cloudinary';
 
 export const athleteProfileRouter = Router();
 
-// Configure multer to use Cloudinary
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    return {
-      folder: 'athlete-marketplace/photos',
-      format: (file.mimetype === 'image/png' ? 'png' : 'jpg'),
-      allowed_formats: ['jpg', 'png', 'jpeg'],
-      public_id: `${req.user?.id}-${Date.now()}`,
-    };
-  }
-} as any);
+// Configure multer to use memory storage
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
@@ -170,11 +159,34 @@ athleteProfileRouter.post('/photo', authenticateToken, requireAthleteRole, (req:
       return res.status(400).json({ error: 'No file uploaded.' });
     }
 
-    const photoUrl = req.file.path; // multer-storage-cloudinary populates 'path' with the secure_url
+    try {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'athlete-marketplace/photos',
+          public_id: `${req.user?.id}-${Date.now()}`,
+          allowed_formats: ['jpg', 'png', 'jpeg'],
+          format: req.file.mimetype === 'image/png' ? 'png' : 'jpg'
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            return res.status(500).json({ error: 'Failed to upload photo to Cloudinary.' });
+          }
+          if (!result) {
+            return res.status(500).json({ error: 'Failed to upload photo to Cloudinary (no result).' });
+          }
 
-    return res.json({
-      message: 'Photo uploaded successfully.',
-      photo_url: photoUrl
-    });
+          return res.json({
+            message: 'Photo uploaded successfully.',
+            photo_url: result.secure_url
+          });
+        }
+      );
+
+      stream.end(req.file.buffer);
+    } catch (processError) {
+      console.error('Photo processing error:', processError);
+      return res.status(500).json({ error: 'Failed to process photo.' });
+    }
   });
 });

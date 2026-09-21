@@ -93,7 +93,7 @@ export default function BrandProfilePage() {
         throw new Error(data.error || 'Failed to update brand profile.');
       }
 
-      setSuccess('Brand profile saved successfully!');
+      setSuccess('Brand profile saved successfully! You are ready to contact athletes.');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -103,115 +103,167 @@ export default function BrandProfilePage() {
 
   if (loading) {
     return (
-      <div style={{ maxWidth: '600px', margin: '4rem auto', textAlign: 'center' }}>
-        <p>Loading brand profile...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Loading brand profile...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '640px', margin: '3rem auto', padding: '2rem', border: '1px solid #eaeaea', borderRadius: '8px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.75rem', margin: 0 }}>Brand Profile Setup</h1>
-        <Link href="/athletes" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem' }}>
-          ← Back to Directory
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-page)' }}>
+      {/* Header */}
+      <header style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1.25rem 2rem',
+        backgroundColor: 'var(--bg-card)',
+        borderBottom: '1px solid var(--border-subtle)',
+      }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+          <div style={{
+            width: '32px', height: '32px',
+            background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+            borderRadius: '8px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontWeight: '800', fontSize: '1.2rem'
+          }}>
+            A
+          </div>
+          <span style={{ fontFamily: 'var(--font-jakarta)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            ATSYS
+          </span>
         </Link>
-      </div>
+        <Link href="/athletes" style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+          Browse Directory →
+        </Link>
+      </header>
 
-      {error && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '4px', marginBottom: '1rem' }}>
-          {error}
+      <main style={{ maxWidth: '720px', margin: '2.5rem auto', padding: '0 1.5rem', width: '100%', flex: 1 }}>
+        <div className="animate-fade-in" style={{
+          backgroundColor: 'var(--bg-card)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '2.5rem',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--shadow-md)'
+        }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+              Brand Profile Setup
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+              Complete your company information to unlock direct messaging and sponsorship inquiries with athletes.
+            </p>
+          </div>
+
+          {error && (
+            <div style={{ padding: '0.875rem 1rem', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', border: '1px solid var(--danger-border)', fontSize: '0.9rem' }}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          {success && (
+            <div style={{ padding: '0.875rem 1rem', backgroundColor: 'var(--success-light)', color: 'var(--success-hover)', borderRadius: 'var(--radius-sm)', marginBottom: '1.5rem', border: '1px solid var(--success-border)', fontSize: '0.9rem', fontWeight: 600 }}>
+              ✓ {success}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Company Name */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                Company / Brand Name *
+              </label>
+              <input
+                type="text"
+                required
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                placeholder="e.g. Apex Nutrition"
+              />
+            </div>
+
+            {/* Website URL */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                Website URL (Optional)
+              </label>
+              <input
+                type="url"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                placeholder="e.g. https://apexnutrition.com"
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                Industry / Category *
+              </label>
+              <input
+                type="text"
+                required
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                placeholder="e.g. Sports Nutrition, Apparel, Recovery Gear, Fitness Tech"
+              />
+            </div>
+
+            {/* Contact Name */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                Primary Contact Person *
+              </label>
+              <input
+                type="text"
+                required
+                value={contactName}
+                onChange={(e) => setContactName(e.target.value)}
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem' }}
+                placeholder="e.g. Jordan Smith (Head of Sports Marketing)"
+              />
+            </div>
+
+            {/* Looking For */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                Sponsorship Objectives & Target Placements (Optional)
+              </label>
+              <textarea
+                value={lookingFor}
+                onChange={(e) => setLookingFor(e.target.value)}
+                rows={4}
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.95rem', lineHeight: 1.5, resize: 'vertical' }}
+                placeholder="e.g. Seeking marathon and Hyrox athletes for arm and shoulder logo placements during 2026 championship events."
+              />
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{
+                marginTop: '0.5rem',
+                padding: '0.875rem 1.5rem',
+                backgroundColor: submitting ? 'var(--primary-hover)' : 'var(--primary)',
+                color: '#ffffff',
+                fontWeight: 700,
+                border: 'none',
+                borderRadius: 'var(--radius-sm)',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                fontSize: '1rem',
+                boxShadow: 'var(--shadow-sm)'
+              }}
+            >
+              {submitting ? 'Saving Profile...' : 'Save Brand Profile'}
+            </button>
+          </form>
         </div>
-      )}
-
-      {success && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '4px', marginBottom: '1rem' }}>
-          {success}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-        {/* Company Name */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Company / Brand Name *</label>
-          <input
-            type="text"
-            required
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Apex Nutrition"
-          />
-        </div>
-
-        {/* Website URL */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Website URL (Optional)</label>
-          <input
-            type="url"
-            value={websiteUrl}
-            onChange={(e) => setWebsiteUrl(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. https://apexnutrition.com"
-          />
-        </div>
-
-        {/* Category */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Industry / Category *</label>
-          <input
-            type="text"
-            required
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Sports Nutrition, Apparel, Fitness Tech, Recovery"
-          />
-        </div>
-
-        {/* Contact Name */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>Primary Contact Person *</label>
-          <input
-            type="text"
-            required
-            value={contactName}
-            onChange={(e) => setContactName(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            placeholder="e.g. Jordan Smith (Head of Marketing)"
-          />
-        </div>
-
-        {/* Looking For */}
-        <div>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>What are you looking for? (Optional)</label>
-          <textarea
-            value={lookingFor}
-            onChange={(e) => setLookingFor(e.target.value)}
-            rows={4}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical' }}
-            placeholder="e.g. Looking for Hyrox athletes in the UK/EU for arm and shoulder logo placements during upcoming 2026 events."
-          />
-        </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            padding: '0.75rem',
-            backgroundColor: '#2563eb',
-            color: '#ffffff',
-            fontWeight: 'bold',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginTop: '0.5rem',
-          }}
-        >
-          {submitting ? 'Saving Profile...' : 'Save Brand Profile'}
-        </button>
-      </form>
+      </main>
     </div>
   );
 }
