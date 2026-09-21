@@ -52,10 +52,11 @@ adminRouter.post('/login', async (req: Request, res: Response): Promise<void> =>
 
   const token = jwt.sign({ admin: true }, JWT_SECRET, { expiresIn: '1d' });
 
+  const isProd = process.env.NODE_ENV === 'production';
   res.cookie(ADMIN_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     maxAge: COOKIE_MAX_AGE,
   });
 
@@ -67,10 +68,11 @@ adminRouter.post('/login', async (req: Request, res: Response): Promise<void> =>
  * Clears the admin_token cookie.
  */
 adminRouter.post('/logout', (_req: Request, res: Response): void => {
+  const isProd = process.env.NODE_ENV === 'production';
   res.clearCookie(ADMIN_COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
   });
   res.json({ message: 'Admin logout successful.' });
 });

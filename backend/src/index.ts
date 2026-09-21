@@ -16,6 +16,8 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 const app = express();
 const port = process.env.PORT || 4000;
 
+app.set('trust proxy', 1);
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',

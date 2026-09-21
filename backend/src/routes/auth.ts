@@ -140,10 +140,11 @@ authRouter.post('/login', async (req: Request, res: Response): Promise<void> => 
     const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '7d' });
 
     // Set httpOnly cookie
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       maxAge: COOKIE_MAX_AGE
     });
 
@@ -165,10 +166,11 @@ authRouter.post('/login', async (req: Request, res: Response): Promise<void> => 
  * POST /auth/logout
  */
 authRouter.post('/logout', (_req: Request, res: Response): void => {
+  const isProd = process.env.NODE_ENV === 'production';
   res.clearCookie(COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax'
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax'
   });
   res.json({ message: 'Logout successful.' });
 });
