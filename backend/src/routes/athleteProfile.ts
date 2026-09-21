@@ -2,27 +2,23 @@ import { Router, Request, Response } from 'express';
 import { authenticateToken } from '../middleware/auth';
 import { query } from '../db';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary';
 
 export const athleteProfileRouter = Router();
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file storage
-const storage = multer.diskStorage({
-  destination: function (_req, _file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, req.user?.id + '-' + uniqueSuffix + path.extname(file.originalname));
+// Configure multer to use Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'athlete-marketplace/photos',
+      format: (file.mimetype === 'image/png' ? 'png' : 'jpg'),
+      allowed_formats: ['jpg', 'png', 'jpeg'],
+      public_id: `${req.user?.id}-${Date.now()}`,
+    };
   }
-});
+} as any);
 
 const upload = multer({
   storage: storage,
@@ -174,8 +170,7 @@ athleteProfileRouter.post('/photo', authenticateToken, requireAthleteRole, (req:
       return res.status(400).json({ error: 'No file uploaded.' });
     }
 
-    // Construct the public URL for the file to be served directly
-    const photoUrl = `/uploads/${req.file.filename}`;
+    const photoUrl = req.file.path; // multer-storage-cloudinary populates 'path' with the secure_url
 
     return res.json({
       message: 'Photo uploaded successfully.',

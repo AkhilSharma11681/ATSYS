@@ -291,7 +291,7 @@ export default function AthletesPage() {
               <div style={{ height: '200px', backgroundColor: '#e5e7eb', position: 'relative' }}>
                 {athlete.photo_url ? (
                   <img
-                    src={`${API_URL}${athlete.photo_url}`}
+                    src={athlete.photo_url.startsWith('http') ? athlete.photo_url : `${API_URL}${athlete.photo_url}`}
                     alt={athlete.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />

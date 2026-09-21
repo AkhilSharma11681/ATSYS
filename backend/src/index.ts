@@ -25,9 +25,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// Static file serving for uploads
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-
 // Routes
 app.use('/auth', authRouter);
 app.use('/admin', adminRouter);

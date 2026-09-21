@@ -308,7 +308,7 @@ export default function AthleteProfilePage() {
             <div style={{ marginTop: '0.5rem' }}>
               <p style={{ fontSize: '0.875rem', color: '#666' }}>Current Photo:</p>
               <img
-                src={`${API_URL}${photoUrl}`}
+                src={photoUrl.startsWith('http') ? photoUrl : `${API_URL}${photoUrl}`}
                 alt="Profile Preview"
                 style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ccc', marginTop: '0.25rem' }}
               />

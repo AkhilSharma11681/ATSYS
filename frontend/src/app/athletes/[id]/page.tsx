@@ -217,7 +217,7 @@ export default function AthleteDetailPage() {
           <div style={{ width: '140px', height: '140px', borderRadius: '50%', overflow: 'hidden', backgroundColor: '#e5e7eb', marginBottom: '1rem', border: '3px solid #ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
             {athlete.photo_url ? (
               <img
-                src={`${API_URL}${athlete.photo_url}`}
+                src={athlete.photo_url.startsWith('http') ? athlete.photo_url : `${API_URL}${athlete.photo_url}`}
                 alt={athlete.name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
